@@ -5,12 +5,13 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+
+	entities "api-fenix/internal/database/models"
 )
 
 func Connect() (*gorm.DB, error) {
 	dsn := "host=localhost user=admin password=admin dbname=fenix port=5432 sslmode=disable TimeZone=Europe/Madrid"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-
 
 	if err != nil {
 		fmt.Println("[db] Error init postgres")
@@ -23,5 +24,5 @@ func Connect() (*gorm.DB, error) {
 }
 
 func ChargeEntities(db *gorm.DB) {
-	db.AutoMigrate(&Client{})
+	db.AutoMigrate(&entities.Client{})
 }

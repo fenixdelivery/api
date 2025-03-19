@@ -1,17 +1,19 @@
 package api
 
 import (
-	fiber "github.com/gofiber/fiber/v2"
-	routes "api-fenix/internal/api/routes"
-	db "api-fenix/internal/database"
 	middlewares "api-fenix/internal/api/middlewares"
+	routes "api-fenix/internal/api/routes"
+	database "api-fenix/internal/database"
+
+	fiber "github.com/gofiber/fiber/v2"
 	gorm "gorm.io/gorm"
 )
 
 var App = fiber.New()
 
 func init() {
-	db, _ := db.Connect()
+	db, _ := database.Connect()
+	database.ChargeEntities(db)
 
 	App.Get("/live", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World!")
@@ -21,4 +23,3 @@ func init() {
 
 	routes.GenerateRoutes(App)
 }
-

@@ -6,15 +6,12 @@ import (
 
 type Client struct {
 	gorm.Model
-	Company  string `json:"company"`
-	Email    string `json:"email"`
-	address  string `json:"address"`
-	Phone    string `json:"phone"`
-	Name     string `json:"name"`
-	Lastname string `json:"lastname"`
-	Description string `json:"description"`
-	Nif string `json:"nif"`
-	Web string `json:"web"`
-	Active bool `json:"active"`
-	DisplayName string `json:"displayName"`
+	Email       string `gorm:"size:50;not null;unique"`
+	Address     string `gorm:"size:80"`
+	Phone       string `gorm:"size:15;unique;not null"`
+	Name        string `gorm:"size:40;not null"`
+	Lastname    string `gorm:"size:40;not null"`
+	Dni         string `gorm:"size:15;not null;unique"`
+	Active      bool   `gorm:"default:true"`
+	DisplayName string `gorm:"size:90"`
 }
