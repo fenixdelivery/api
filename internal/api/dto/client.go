@@ -1,10 +1,10 @@
 package dto
 
 type ClientDTO struct {
-	Email    string `json:"email" validation:"required,email"`
+	Email    string `json:"email" validate:"required,email"`
 	Address  string `json:"address"`
-	Phone    string `json:"phone" validation:"required"`
-	Name     string `json:"name" validation:"required""`
-	Lastname string `json:"lastname" validation:"required"`
-	Dni      string `json:"dni" validation:"required"`
+	Phone    string `json:"phone" validate:"required"`
+	Name     string `json:"name" validate:"required""`
+	Lastname string `json:"lastname" validate:"required"`
+	Dni      string `json:"dni" validate:"required"`
 }
