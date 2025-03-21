@@ -2,15 +2,24 @@ package database
 
 import (
 	"fmt"
+	"os"
+	"log"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"github.com/joho/godotenv"
 
 	entities "api-fenix/internal/database/models"
 )
 
 func Connect() (*gorm.DB, error) {
-	dsn := "host=localhost user=admin password=admin dbname=fenix port=5432 sslmode=disable TimeZone=Europe/Madrid"
+	err := godotenv.Load()
+    
+	if err != nil {
+            log.Fatal("Error al cargar el archivo .env")
+    }
+
+	dsn := os.Getenv("DATABASE_URL")
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
