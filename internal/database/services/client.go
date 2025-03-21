@@ -2,7 +2,7 @@ package services
 
 import (
 	"fmt"
-	// "strings"
+	"strings"
 	"reflect"
 
 	dto "api-fenix/internal/api/dto"
@@ -11,11 +11,6 @@ import (
 	gorm "gorm.io/gorm"
 )
 
-type Filters struct {
-	name string
-	dni string
-}
-
 func CreateClient(db *gorm.DB, clientDto dto.ClientDTO) (entities.Client, error) {
 	client := entities.Client{
 		Name:     clientDto.Name,
@@ -23,7 +18,7 @@ func CreateClient(db *gorm.DB, clientDto dto.ClientDTO) (entities.Client, error)
 		Email:    clientDto.Email,
 		Phone:    clientDto.Phone,
 		Lastname: clientDto.Lastname,
-		Dni:      clientDto.Dni,
+		Type:     clientDto.Type,
 		DisplayName: fmt.Sprintf("%s %s", clientDto.Name, clientDto.Lastname),
 	}
 
@@ -37,7 +32,7 @@ func CreateClient(db *gorm.DB, clientDto dto.ClientDTO) (entities.Client, error)
 }
 
 func ReadClients(db *gorm.DB, filters dto.ClientDTO, page int) ([]entities.Client, error) {
-	// var builder strings.Builder
+	var builder strings.Builder
 	clients := []entities.Client{}
 
 	rv := reflect.ValueOf(filters)
@@ -46,16 +41,28 @@ func ReadClients(db *gorm.DB, filters dto.ClientDTO, page int) ([]entities.Clien
 	offset := (page - 1) * 40
 
 	for i := 0; i < rt.NumField(); i++ {
-        field := rt.Field(i)
-        value := rv.Field(i)
+        value := rv.Field(i).Interface().(string)
+
+		if strings.Compare(value, "") == 0 {
+			continue
+		}
+
+		field := rt.Field(i).Tag.Get("json")
 		
-		fmt.Println(field)
-		fmt.Println(value)
+		builder.WriteString(field)
+		builder.WriteString(" = ")
+		builder.WriteString(value)
+		builder.WriteString(" AND ")
     }
 
-	db.Limit(40).Offset(offset).Find(&clients)
+	where := builder.String()
+	
+	if strings.Compare(where, "") != 0 {
+		db.Limit(40).Offset(offset).Where(where[:len(where) - 5]).Find(&clients)
+		return clients, nil
+	}
 
-	fmt.Println(clients)
+	db.Limit(40).Offset(offset).Find(&clients)
 
 	return clients, nil
 }

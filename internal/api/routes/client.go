@@ -109,6 +109,18 @@ func ClientRoutes(app *fiber.App) {
 			})
 		}
 
+		if len(clients) == 0 {
+			return ctx.Status(404).JSON(fiber.Map{
+				"data": fiber.Map{
+					"clients": clients,
+				},
+				"message": "No se han encontrado clientes",
+				"code": 404,
+				"error": nil,
+		})
+
+		}
+
 		return ctx.Status(200).JSON(fiber.Map{
 			"data": fiber.Map{
 				"clients": clients,
@@ -116,7 +128,6 @@ func ClientRoutes(app *fiber.App) {
 			"message": "El cliente ha sido encontrado con exito",
 			"code": 200,
 			"error": nil,
-
 		})
 	})
 

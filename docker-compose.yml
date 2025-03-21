@@ -4,7 +4,6 @@ services:
     container_name: fenix_db
     ports:
       - 5432:5432
-    restart: always
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=admin
@@ -14,4 +13,4 @@ services:
       - db:/var/lib/postgresql/data/pgdata
 
 volumes:
-  db:  
+  db:

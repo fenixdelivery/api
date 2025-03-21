@@ -6,5 +6,5 @@ type ClientDTO struct {
 	Phone    string `json:"phone" validate:"required"`
 	Name     string `json:"name" validate:"required""`
 	Lastname string `json:"lastname" validate:"required"`
-	Dni      string `json:"dni" validate:"required"`
+	Type	 string `json:"type" validate:"required"`
 }
